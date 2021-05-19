@@ -11,7 +11,6 @@ class Piano:
 	amount = 0
 	combo = 0
 	points = 0
-	keys = pygame.key.get_pressed()
 	my_font = pygame.font.Font(None, 24)
 
 	def __init__(self):
@@ -48,6 +47,7 @@ class Piano:
 						pygame.display.flip()
 						self.spy[i] = 2001
 						self.amount -= 0.3
+						pygame.Rect.move()
 						print(2)
 
 			elif keys[pygame.K_3]:
@@ -90,17 +90,15 @@ class Piano:
 	def mover(self, speed, height):
 		# text = self.my_font.render(str(int(self.points)), False, (0,0,0))
 		# self.screen.blit(text,(0,0))
-		# pygame.draw.line(self.screen, (0, 255, 0), [200, 0], [200, 1000], 5)
-		# pygame.draw.line(self.screen, (0, 255, 0), [400, 0], [400, 1000], 5)
-		# pygame.draw.line(self.screen, (255, 0, 0), [0, 800], [600, 800], 5)
 		pygame.display.flip()
-
 		for i in range(len(self.spy)):
 			if self.spy[i] <= 1000:
-
 				pygame.draw.rect(self.screen, (255, 255, 255), (self.spx[i], self.spy[i], 200, height))
 				pygame.draw.rect(self.screen, (0, 0, 0), (self.spx[i], self.spy[i] + 1 * speed, 200, height))
 				self.spy[i] += 1 * speed
+				pygame.draw.line(self.screen, (0, 255, 0), [200, 0], [200, 1000], 5)
+				pygame.draw.line(self.screen, (0, 255, 0), [400, 0], [400, 1000], 5)
+				pygame.draw.line(self.screen, (255, 0, 0), [0, 800], [600, 800], 5)
 
 				pygame.display.flip()
 			elif self.spy[i] >= 2000:

@@ -38,9 +38,12 @@ with sqlite3.connect("users.sqlite") as conn:
 	#         print(f"{Style.Bold}Restart the game" + Style.Reset)
 	#         sys.exit()
 	# log.debug("user in")
+
 	height = 100
 	speed = 1
 	piano.left_create(height)
+	piano.right_create(height)
+	piano.middle_create(height)
 	while True:
 		piano.mover(speed, height)
 		piano.arseniy()
