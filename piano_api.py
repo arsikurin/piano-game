@@ -20,7 +20,7 @@ class Piano:
 		pygame.draw.line(self.screen, (255, 0, 0), [0, 800], [600, 800], 5)
 		pygame.display.flip()
 
-	def arseniy(self):
+	def arseny(self):
 		for event in pygame.event.get():
 			keys = pygame.key.get_pressed()
 			if event.type == pygame.QUIT:

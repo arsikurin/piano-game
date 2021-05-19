@@ -46,4 +46,4 @@ with sqlite3.connect("users.sqlite") as conn:
 	piano.middle_create(height)
 	while True:
 		piano.mover(speed, height)
-		piano.arseniy()
+		piano.arseny()
