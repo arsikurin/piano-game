@@ -1,116 +1,118 @@
 import logging as log
-
 import pygame
 import sys
+import numpy as np
+import random
+import time
+
+clock = pygame.time.Clock()
+times = np.linspace(0.35, 0.6)
 
 
 class Piano:
-    pygame.font.init()
+    # pygame.font.init()
+    key_height = 120
     size = width, height = 600, 1000
-    screen = pygame.display.set_mode(size)
-    spx = []
-    spy = []
+    surface = pygame.display.set_mode(size)
     amount = 0
-    combo = 0
     points = 0
-    my_font = pygame.font.Font(None, 24)
+    rects = []
+    surface.fill((255, 255, 255))
+    pygame.draw.line(surface, (0, 255, 0), [200, 0], [200, 1000], 5)
+    pygame.draw.line(surface, (0, 255, 0), [400, 0], [400, 1000], 5)
+    pygame.draw.line(surface, (255, 0, 0), [0, 800], [600, 800], 5)
+    pygame.display.update()
 
-    def __init__(self):
-        self.screen.fill((255, 255, 255))
-        pygame.draw.line(self.screen, (0, 255, 0), [200, 0], [200, 1000], 5)
-        pygame.draw.line(self.screen, (0, 255, 0), [400, 0], [400, 1000], 5)
-        pygame.draw.line(self.screen, (255, 0, 0), [0, 800], [600, 800], 5)
-        pygame.display.flip()
+    # my_font = pygame.font.Font(None, 24)
 
-    def arseny(self):
-        keys = pygame.key.get_pressed()
+    @classmethod
+    def handle_events(cls) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            elif keys[pygame.K_1]:
-                for i in range(len(self.spx)):
-                    if self.spy[i] <= 800 <= self.spy[i] + 100 and self.spx[i] == 0:
-                        self.combo += 1
-                        self.points += 100 * (self.combo * 0.1)
-                        pygame.draw.rect(self.screen, (255, 255, 255), (self.spx[i], self.spy[i], 200, 100))
-                        pygame.draw.line(self.screen, (0, 255, 0), [200, 0], [200, 1000], 5)
-                        pygame.draw.line(self.screen, (0, 255, 0), [400, 0], [400, 1000], 5)
-                        pygame.draw.line(self.screen, (255, 0, 0), [0, 800], [600, 800], 5)
-                        pygame.display.flip()
-                        self.spy[i] = 2001
-                        self.amount -= 1
-                        log.debug('есть пробитие 1')
+            elif event.type == pygame.KEYDOWN and event.key == 49:
+                for rect in cls.rects:
+                    mid, bottom = rect.midbottom
+                    if mid < 100 and bottom >= 800 >= bottom - cls.key_height:
+                        pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                        cls.rects.remove(rect)
+                        cls.amount -= 1
+                        print("LEFT")
+                    else:
+                        print("MISS")
+
+            elif event.type == pygame.KEYDOWN and event.key == 50:
+                for rect in cls.rects:
+                    mid, bottom = rect.midbottom
+                    if 400 > mid > 100 and bottom >= 800 >= bottom - cls.key_height:
+                        pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                        cls.rects.remove(rect)
+                        cls.amount -= 1
+                        print("MID")
+                    else:
+                        print("MISS")
+
+            elif event.type == pygame.KEYDOWN and event.key == 51:
+                for rect in cls.rects:
+                    mid, bottom = rect.midbottom
+                    if mid > 500 and bottom >= 800 >= bottom - cls.key_height:
+                        pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                        cls.rects.remove(rect)
+                        cls.amount -= 1
+                        print("RIGHT")
+                    else:
+                        print("MISS")
+
+    @classmethod
+    def left_create(cls) -> None:
+        rect = pygame.rect.Rect((0, 0, 198, cls.key_height))
+        pygame.draw.rect(cls.surface, (0, 0, 0), rect)
+        cls.rects.append(rect)
+        cls.amount += 1
+
+    @classmethod
+    def middle_create(cls) -> None:
+        rect = pygame.rect.Rect((203, 0, 195, cls.key_height))
+        pygame.draw.rect(cls.surface, (0, 0, 0), rect)
+        cls.rects.append(rect)
+        cls.amount += 1
+
+    @classmethod
+    def right_create(cls) -> None:
+        rect = pygame.rect.Rect((403, 0, 200, cls.key_height))
+        pygame.draw.rect(cls.surface, (0, 0, 0), rect)
+        cls.rects.append(rect)
+        cls.amount += 1
+
+    @classmethod
+    def mover(cls) -> None:
+        for rect in cls.rects:
+            pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+            rect.move_ip(0, 1)
+            pygame.draw.rect(cls.surface, (0, 0, 0), rect)
+            pygame.draw.line(cls.surface, (255, 0, 0), [0, 800], [600, 800], 5)
+
+    @classmethod
+    def clear_rects(cls) -> None:
+        if cls.amount > 20:
+            pygame.draw.rect(cls.surface, (255, 255, 255), cls.rects[0])
+            del cls.rects[0]
+            cls.amount -= 1
 
 
-            elif keys[pygame.K_2]:
-                for i in range(len(self.spx)):
-                    if self.spy[i] <= 800 <= self.spy[i] + 100 and self.spx[i] == 200:
-                        self.combo += 1
-                        self.points += 100 * (self.combo * 0.1)
-                        pygame.draw.rect(self.screen, (255, 255, 255), (self.spx[i], self.spy[i], 200, 100))
-                        pygame.display.flip()
-                        self.spy[i] = 2001
-                        self.amount -= 1
-                        log.debug('есть пробитие 2')
-
-            elif keys[pygame.K_3]:
-                for i in range(len(self.spx)):
-                    if self.spy[i] <= 800 <= self.spy[i] + 100 and self.spx[i] == 400:
-                        self.combo += 1
-                        self.points += 100 + (self.combo * 0.1)
-                        pygame.draw.rect(self.screen, (255, 255, 255), (self.spx[i], self.spy[i], 200, 100))
-                        pygame.display.flip()
-                        self.spy[i] = 2001
-                        self.amount -= 1
-                        log.debug('есть пробитие 3')
-
-    # elif keys[pygame.K_ESCAPE]:
-
-    def left_create(self, height):
-        x, y = 0, 0
-        pygame.draw.rect(self.screen, (0, 0, 0), (x, y, 200, height))
-        pygame.display.flip()
-        self.amount += 1
-        self.spx.append(x)
-        self.spy.append(y)
-
-    def middle_create(self, height):
-        x, y = 200, 0
-        pygame.draw.rect(self.screen, (0, 0, 0), (200, 0, 200, height))
-        pygame.display.flip()
-        self.spx.append(x)
-        self.spy.append(y)
-        self.amount += 1
-
-    def right_create(self, height):
-        x, y = 400, 0
-        pygame.draw.rect(self.screen, (0, 0, 0), (400, 0, 200, height))
-        pygame.display.flip()
-        self.spx.append(x)
-        self.spy.append(y)
-        self.amount += 1
-
-    def mover(self, speed, height):
-        # text = self.my_font.render(str(int(self.points)), False, (0,0,0))
-        # self.screen.blit(text,(0,0))
-        pygame.display.flip()
-        for i in range(len(self.spy)):
-            if self.spy[i] <= 1000:
-                pygame.draw.rect(self.screen, (255, 255, 255), (self.spx[i], self.spy[i], 200, height))
-                pygame.draw.rect(self.screen, (0, 0, 0), (self.spx[i], self.spy[i] + 1 * speed, 200, height))
-                self.spy[i] += 1 * speed
-                pygame.draw.line(self.screen, (0, 255, 0), [200, 0], [200, 1000], 5)
-                pygame.draw.line(self.screen, (0, 255, 0), [400, 0], [400, 1000], 5)
-                pygame.draw.line(self.screen, (255, 0, 0), [0, 800], [600, 800], 5)
-
-                pygame.display.flip()
-            elif self.spy[i] >= 2000:
-                pass
-            else:
-                self.amount -= 1
-                self.spy[i] = 2001
+def keys_generator() -> None:
+    while True:
+        a = float(random.choice(times))
+        time.sleep(a)
+        choose = random.randint(0, 2)
+        if choose == 0:
+            Piano.left_create()
+        elif choose == 1:
+            Piano.middle_create()
+        else:
+            Piano.right_create()
 
 
 def init_user(nickname: str, conn, c):
@@ -127,7 +129,7 @@ def init_user(nickname: str, conn, c):
 
 # def update_nickname(nickname: str, nickname: int) -> None:
 #     """
-#     update student's mail address
+#     update user's nickname
 #
 #     :param nickname:
 #     :param nickname: id of the user
@@ -140,7 +142,7 @@ def init_user(nickname: str, conn, c):
 
 def update_password(password: str, nickname: str, conn, c) -> None:
     """
-    update student's mail password
+    update user's password
 
     :param password: mail password
     :param nickname: id of the user
@@ -152,7 +154,7 @@ def update_password(password: str, nickname: str, conn, c) -> None:
 
 def update_lvl(lvl: int, nickname: str, conn, c) -> None:
     """
-    update student.letovo.ru password
+    update user's level
 
     :param lvl: letovo analytics password
     :param nickname: id of the user
@@ -164,7 +166,7 @@ def update_lvl(lvl: int, nickname: str, conn, c) -> None:
 
 def update_points(points: int, nickname: str, conn, c) -> None:
     """
-    update student.letovo.ru login
+    update user's points
 
     :param points: letovo analytics login
     :param nickname: id of the user

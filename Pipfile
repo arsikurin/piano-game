@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pygame = "*"
 colourlib = "*"
+numpy = "*"
 
 [dev-packages]
 
