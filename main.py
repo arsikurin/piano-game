@@ -42,6 +42,7 @@ with sqlite3.connect("users.sqlite") as conn:
 	height = 100
 	speed = 1
 	piano.left_create(height)
+
 	piano.right_create(height)
 	piano.middle_create(height)
 	while True:
