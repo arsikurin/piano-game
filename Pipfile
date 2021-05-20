@@ -8,6 +8,7 @@ pygame = "*"
 colourlib = "*"
 numpy = "*"
 requests = "*"
+pygame-menu = "*"
 
 [dev-packages]
 

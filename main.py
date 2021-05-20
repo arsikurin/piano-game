@@ -1,9 +1,8 @@
-# import pygame
-# import logging as log
-import threading
 import sqlite3
+import pygame_menu
 from colourlib import *
 from piano_api import *
+from pygame_menu.examples import create_example_window
 
 DEBUG = True
 if DEBUG:
@@ -36,20 +35,20 @@ with sqlite3.connect("users.sqlite") as conn:
     #         print(f"{Style.Bold}Restart the game" + Style.Reset)
     #         sys.exit()
     # log.debug("user in")
-    clock = pygame.time.Clock()
-    times = np.linspace(0.35, 0.6)
-    key_generator_thread = threading.Thread(target=keys_generator, daemon=True)
-    key_generator_thread.start()
 
-    while True:
-        segoeui_font = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
-        pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
-        score_text = segoeui_font.render(f"Score: {Piano.score}", True, (255, 0, 0))
-        Piano.surface.blit(score_text, (2, 0))
-        pygame.display.update()
+    pygame.init()
+    menu_surface = create_example_window("Piano - menu", (600, 400))
 
-        speed_setter()
-        Piano.mover()
-        Piano.handle_events()
-        pygame.display.update()
-        Piano.clear_rects()
+    menu = pygame_menu.Menu(
+        height=400,
+        theme=pygame_menu.themes.THEME_SOLARIZED_DARK,
+        title="Piano",
+        width=600
+    )
+
+    user_name = menu.add.text_input("Nickname: ", default="3p1c Cl1ck3r", maxchar=24)
+    # menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
+    menu.add.button("Play", main)
+    menu.add.button("Quit", pygame_menu.events.EXIT)
+    log.debug("menu set")
+    menu.mainloop(menu_surface)
