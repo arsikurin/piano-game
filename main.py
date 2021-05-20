@@ -38,12 +38,21 @@ with sqlite3.connect("users.sqlite") as conn:
     pygame.init()
     menu_surface = create_example_window("Piano - menu", (600, 400))
 
-    menu = pygame_menu.Menu(
-        height=400,
-        theme=pygame_menu.themes.THEME_SOLARIZED_DARK,
-        title="Piano",
-        width=600
-    )
+    try:
+        menu = pygame_menu.Menu(
+            height=400,
+            theme=pygame_menu.themes.THEME_SOLARIZED_DARK,
+            title="Piano",
+            width=600
+        )
+    except AttributeError:
+        log.debug("THEME_SOLARIZED_DARK not found. Switching to THEME_DARK")
+        menu = pygame_menu.Menu(
+            height=400,
+            theme=pygame_menu.themes.THEME_DARK,
+            title="Piano",
+            width=600
+        )
 
     user_name = menu.add.text_input("Nickname: ", default="3p1c Cl1ck3r", maxchar=24)
     # menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
