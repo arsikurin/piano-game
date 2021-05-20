@@ -39,9 +39,9 @@ class Piano:
                         pygame.draw.rect(cls.surface, (255, 255, 255), rect)
                         cls.rects.remove(rect)
                         cls.amount -= 1
-                        print("LEFT")
-                    else:
-                        print("MISS")
+                        log.debug("LEFT")
+                    # else:
+                    #     log.debug("MISS")
 
             elif event.type == pygame.KEYDOWN and event.key == 50:
                 for rect in cls.rects:
@@ -50,9 +50,9 @@ class Piano:
                         pygame.draw.rect(cls.surface, (255, 255, 255), rect)
                         cls.rects.remove(rect)
                         cls.amount -= 1
-                        print("MID")
-                    else:
-                        print("MISS")
+                        log.debug("MID")
+                    # else:
+                    #     log.debug("MISS")
 
             elif event.type == pygame.KEYDOWN and event.key == 51:
                 for rect in cls.rects:
@@ -61,9 +61,9 @@ class Piano:
                         pygame.draw.rect(cls.surface, (255, 255, 255), rect)
                         cls.rects.remove(rect)
                         cls.amount -= 1
-                        print("RIGHT")
-                    else:
-                        print("MISS")
+                        log.debug("RIGHT")
+                    # else:
+                    #     log.debug("MISS")
 
     @classmethod
     def left_create(cls) -> None:
