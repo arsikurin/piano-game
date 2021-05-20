@@ -1,6 +1,5 @@
 import logging as log
 import sqlite3
-
 import pygame
 import threading
 import sys
@@ -106,7 +105,7 @@ def main() -> None:
             cls.amount += 1
 
         @classmethod
-        def mover(cls) -> None:
+        def move_keys(cls) -> None:
             """
             moves keys
             """
@@ -134,14 +133,14 @@ def main() -> None:
                 del cls.rects[0]
                 cls.amount -= 1
 
-    def keys_generator() -> None:
+    def generate_keys() -> None:
         """
         generates keys
         """
         log.debug("keys generator thread started")
         while True:
-            a = float(random.choice(times))
-            time.sleep(a)
+            wait = float(random.choice(times))
+            time.sleep(wait)
             choose = random.randint(0, 2)
             if choose == 0:
                 Piano.left_create()
@@ -173,19 +172,19 @@ def main() -> None:
         #     clock.tick(360)
 
     times = np.linspace(0.4, 0.6)
-    thread1 = threading.Thread(target=keys_generator, daemon=True)
-    thread1.start()
+    keys_generator_thread = threading.Thread(target=generate_keys, daemon=True)
+    keys_generator_thread.start()
 
     log.debug("game thread started")
     while True:
-        font1 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+        segoeui_font = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
         pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
-        text1 = font1.render(f"Score: {Piano.score}", True, (255, 0, 0))
-        Piano.surface.blit(text1, (2, 0))
+        score_text = segoeui_font.render(f"Score: {Piano.score}", True, (255, 0, 0))
+        Piano.surface.blit(score_text, (2, 0))
         pygame.display.update()
 
         speed_setter()
-        Piano.mover()
+        Piano.move_keys()
         Piano.handle_events()
         pygame.display.update()
         Piano.clear_rects()

@@ -1,4 +1,3 @@
-import sqlite3
 import pygame_menu
 from colourlib import *
 from piano_api import *
