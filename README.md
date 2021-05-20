@@ -15,8 +15,6 @@ pipenv shell
 pipenv install
 ```
 
-
-
 ### run game
 ```shell
 python main.py
