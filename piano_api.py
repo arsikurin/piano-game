@@ -1,4 +1,6 @@
 import logging as log
+import sqlite3
+
 import pygame
 import threading
 import sys
@@ -7,7 +9,7 @@ import random
 import time
 
 
-def main():
+def main() -> None:
     class Piano:
         pygame.font.init()
         clock = pygame.time.Clock()
@@ -158,7 +160,7 @@ def main():
         # times = np.linspace(0.6, 0.9)
         # elif Piano.score < 30:
         Piano.clock.tick(360)
-        times = np.linspace(0.35, 0.6)
+        times = np.linspace(0.4, 0.6)
         # elif Piano.score < 80:
         #     Piano.jump = 2
         #     clock.tick(260)
@@ -170,7 +172,7 @@ def main():
         #     Piano.jump = 4
         #     clock.tick(360)
 
-    times = np.linspace(0.35, 0.6)
+    times = np.linspace(0.4, 0.6)
     thread1 = threading.Thread(target=keys_generator, daemon=True)
     thread1.start()
 
@@ -189,10 +191,16 @@ def main():
         Piano.clear_rects()
 
 
-def init_user(nickname: str, conn, c) -> None:
+def init_user(
+        nickname: str,
+        conn: sqlite3.Connection,
+        c: sqlite3.Cursor
+) -> None:
     """
     initialize new user
 
+    :param c: cursor
+    :param conn: connection to db
     :param nickname: user's nickname
     """
     with conn:
@@ -201,58 +209,89 @@ def init_user(nickname: str, conn, c) -> None:
             {"nickname": nickname, "password": None, "points": None, "lvl": 1})
 
 
-def update_password(password: str, nickname: str, conn, c) -> None:
+def update_password(
+        password: str,
+        nickname: str,
+        conn: sqlite3.Connection,
+        c: sqlite3.Cursor
+) -> None:
     """
     update user's password
 
-    :param password: mail password
-    :param nickname: id of the user
+    :param c: cursor
+    :param conn: connection to db
+    :param password: user's password
+    :param nickname: user's nickname
     """
     with conn:
         c.execute("UPDATE users SET password = :password WHERE nickname = :nickname",
                   {"password": password, "nickname": nickname})
 
 
-def update_lvl(lvl: int, nickname: str, conn, c) -> None:
+def update_lvl(
+        lvl: int,
+        nickname: str,
+        conn: sqlite3.Connection,
+        c: sqlite3.Cursor
+) -> None:
     """
     update user's level
 
-    :param lvl: letovo analytics password
-    :param nickname: id of the user
+    :param c: cursor
+    :param conn: connection to db
+    :param lvl: user's level
+    :param nickname: user's nickname
     """
     with conn:
         c.execute("UPDATE users SET lvl = :lvl WHERE nickname = :nickname",
                   {"lvl": lvl, "nickname": nickname})
 
 
-def update_points(points: int, nickname: str, conn, c) -> None:
+def update_points(
+        points: int,
+        nickname: str,
+        conn: sqlite3.Connection,
+        c: sqlite3.Cursor
+) -> None:
     """
     update user's points
 
-    :param points: letovo analytics login
-    :param nickname: id of the user
+    :param c: cursor
+    :param conn: connection to db
+    :param points: user's points
+    :param nickname: user's nickname
     """
     with conn:
         c.execute("UPDATE users SET points = :points WHERE nickname = :nickname",
                   {"points": points, "nickname": nickname})
 
 
-def delete_user(nickname: str, conn, c) -> None:
+def delete_user(
+        nickname: str,
+        conn: sqlite3.Connection,
+        c: sqlite3.Cursor
+) -> None:
     """
-    delete user from DB
+    delete user from db
 
     :param nickname: user's nickname
-    :param conn:
-    :param c:
+    :param conn: connection to db
+    :param c: cursor
     """
     with conn:
         c.execute("delete from users where nickname=:nickname", {"nickname": nickname})
 
 
-def get_user(nickname: str, conn, c) -> tuple:
+def get_user(
+        nickname: str,
+        conn: sqlite3.Connection,
+        c: sqlite3.Cursor
+) -> tuple:
     """
     get user data
 
+    :param c: cursor
+    :param conn: connection to db
     :param nickname: user's nickname
     :return: user data
     """
