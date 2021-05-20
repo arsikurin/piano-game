@@ -1,12 +1,9 @@
-# import sys
 # import pygame
 # import logging as log
 import threading
 import sqlite3
 from colourlib import *
 from piano_api import *
-
-piano = Piano()
 
 DEBUG = True
 if DEBUG:
@@ -39,13 +36,20 @@ with sqlite3.connect("users.sqlite") as conn:
     #         print(f"{Style.Bold}Restart the game" + Style.Reset)
     #         sys.exit()
     # log.debug("user in")
+    clock = pygame.time.Clock()
+    times = np.linspace(0.35, 0.6)
     thread1 = threading.Thread(target=keys_generator, daemon=True)
     thread1.start()
 
     while True:
+        font1 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+        pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
+        text1 = font1.render(f"Score: {Piano.score}", True, (255, 0, 0))
+        Piano.surface.blit(text1, (2, 0))
+        pygame.display.update()
+
+        speed_setter()
         Piano.mover()
         Piano.handle_events()
         pygame.display.update()
         Piano.clear_rects()
-
-        clock.tick(360)
