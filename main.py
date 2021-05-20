@@ -38,14 +38,14 @@ with sqlite3.connect("users.sqlite") as conn:
     # log.debug("user in")
     clock = pygame.time.Clock()
     times = np.linspace(0.35, 0.6)
-    thread1 = threading.Thread(target=keys_generator, daemon=True)
-    thread1.start()
+    key_generator_thread = threading.Thread(target=keys_generator, daemon=True)
+    key_generator_thread.start()
 
     while True:
-        font1 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+        segoeui_font = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
         pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
-        text1 = font1.render(f"Score: {Piano.score}", True, (255, 0, 0))
-        Piano.surface.blit(text1, (2, 0))
+        score_text = segoeui_font.render(f"Score: {Piano.score}", True, (255, 0, 0))
+        Piano.surface.blit(score_text, (2, 0))
         pygame.display.update()
 
         speed_setter()

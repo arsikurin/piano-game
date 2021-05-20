@@ -11,6 +11,7 @@ times = np.linspace(0.35, 0.6)
 
 class Piano:
     pygame.font.init()
+    pygame.display.set_caption("Piano")
     key_height = 120
     size = width, height = 600, 1000
     surface = pygame.display.set_mode(size)
@@ -18,14 +19,18 @@ class Piano:
     score = 0
     rects = []
     surface.fill((255, 255, 255))
-    pygame.draw.line(surface, (0, 255, 0), [200, 0], [200, 1000], 5)
-    pygame.draw.line(surface, (0, 255, 0), [400, 0], [400, 1000], 5)
+    pygame.draw.line(surface, (128, 128, 128), [200, 0], [200, 1000], 5)
+    pygame.draw.line(surface, (128, 128, 128), [400, 0], [400, 1000], 5)
+    pygame.draw.line(surface, (128, 128, 128), [0, 52], [600, 52], 5)
     pygame.draw.line(surface, (255, 0, 0), [0, 800], [600, 800], 5)
     pygame.display.update()
     jump = 1
 
     @classmethod
     def handle_events(cls) -> None:
+        """
+        handles events
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -68,36 +73,59 @@ class Piano:
                     #     log.debug("MISS")
 
     @classmethod
-    def left_create(cls):
+    def left_create(cls) -> None:
+        """
+        creates left key
+        """
         rect = pygame.rect.Rect((0, 50, 198, cls.key_height))
         pygame.draw.rect(cls.surface, (0, 0, 0), rect)
         cls.rects.append(rect)
         cls.amount += 1
 
     @classmethod
-    def middle_create(cls):
+    def middle_create(cls) -> None:
+        """
+        creates middle key
+        """
         rect = pygame.rect.Rect((203, 50, 195, cls.key_height))
         pygame.draw.rect(cls.surface, (0, 0, 0), rect)
         cls.rects.append(rect)
         cls.amount += 1
 
     @classmethod
-    def right_create(cls):
+    def right_create(cls) -> None:
+        """
+        creates right key
+        """
         rect = pygame.rect.Rect((403, 50, 200, cls.key_height))
         pygame.draw.rect(cls.surface, (0, 0, 0), rect)
         cls.rects.append(rect)
         cls.amount += 1
 
     @classmethod
-    def mover(cls):
+    def mover(cls) -> None:
+        """
+        moves keys
+        """
         for rect in cls.rects:
             pygame.draw.rect(cls.surface, (255, 255, 255), rect)
             rect.move_ip(0, cls.jump)
             pygame.draw.rect(cls.surface, (0, 0, 0), rect)
             pygame.draw.line(cls.surface, (255, 0, 0), [0, 800], [600, 800], 5)
+            pygame.draw.line(cls.surface, (128, 128, 128), [0, 52], [600, 52], 5)
+            if rect.midbottom[1] > 1150:
+                pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                cls.amount -= 1
+                log.debug("missed a key")
+                cls.rects.remove(rect)
+                if cls.score:
+                    cls.score -= 1
 
     @classmethod
-    def clear_rects(cls):
+    def clear_rects(cls) -> None:
+        """
+        clears excess keys
+        """
         if cls.amount > 20:
             pygame.draw.rect(cls.surface, (255, 255, 255), cls.rects[0])
             del cls.rects[0]
@@ -105,6 +133,9 @@ class Piano:
 
 
 def keys_generator() -> None:
+    """
+    generates keys
+    """
     while True:
         a = float(random.choice(times))
         time.sleep(a)
@@ -117,7 +148,10 @@ def keys_generator() -> None:
             Piano.right_create()
 
 
-def speed_setter():
+def speed_setter() -> None:
+    """
+    sets keys speed
+    """
     global times
     # if Piano.score < 10:
     #     clock.tick(240)
@@ -136,7 +170,7 @@ def speed_setter():
     #     clock.tick(360)
 
 
-def init_user(nickname: str, conn, c):
+def init_user(nickname: str, conn, c) -> None:
     """
     initialize new user
 
@@ -201,7 +235,7 @@ def delete_user(nickname: str, conn, c) -> None:
     """
     delete user from DB
 
-    :param nickname:
+    :param nickname: user's nickname
     :param conn:
     :param c:
     """
