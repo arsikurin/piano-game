@@ -9,6 +9,7 @@ colourlib = "*"
 numpy = "*"
 requests = "*"
 pygame-menu = "*"
+audioplayer = "*"
 
 [dev-packages]
 
