@@ -62,7 +62,8 @@ def main(user_nickname) -> None:
                                 cls.is_missed = False
                                 break
                         if cls.is_missed:
-                            cls.score -= 1
+                            if cls.score:
+                                cls.score -= 1
                             log.debug("MISS")
                         else:
                             cls.is_missed = True
@@ -79,7 +80,8 @@ def main(user_nickname) -> None:
                                 cls.is_missed = False
                                 break
                         if cls.is_missed:
-                            cls.score -= 1
+                            if cls.score:
+                                cls.score -= 1
                             log.debug("MISS")
                         else:
                             cls.is_missed = True
@@ -96,7 +98,8 @@ def main(user_nickname) -> None:
                                 cls.is_missed = False
                                 break
                         if cls.is_missed:
-                            cls.score -= 1
+                            if cls.score:
+                                cls.score -= 1
                             log.debug("MISS")
                         else:
                             cls.is_missed = True
@@ -184,8 +187,10 @@ def main(user_nickname) -> None:
             @classmethod
             def render_score(cls) -> None:
                 pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
-                score_text = segoeui_font.render(f"{highest_score}   {Piano.score}", True, (255, 0, 0))
-                Piano.surface.blit(score_text, (2, 0))
+                Piano.surface.blit(segoeui_font_36.render(f"{highest_score}   {Piano.score}", True, (255, 0, 0)),
+                                   (2, 0))
+                # Piano.surface.blit(segoeui_font_30.render(f"{user_nickname}", True, (255, 0, 0)),
+                #                    (cls.window_width - len(user_nickname) * 15, 7))
 
             @classmethod
             def set_speed(cls) -> None:
@@ -211,7 +216,8 @@ def main(user_nickname) -> None:
 
         keys_generator_thread = threading.Thread(target=Piano.generate_keys, daemon=True)
         keys_generator_thread.start()
-        segoeui_font = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+        segoeui_font_36 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+        segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
         highest_score = get_user(user_nickname, conn, c)[1]
         Piano.set_music("stal-c418.wav")
 
@@ -246,7 +252,7 @@ def init_user(
     with conn:
         c.execute(
             "INSERT INTO users VALUES (:nickname, :highest_points, :lvl)",
-            {"nickname": nickname, "highest_points": None, "lvl": 1})
+            {"nickname": nickname, "highest_points": 0, "lvl": 1})
 
 
 def get_user(
