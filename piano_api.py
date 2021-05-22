@@ -14,7 +14,7 @@ def main(user_nickname) -> None:
         c = conn.cursor()
         if not get_user((user_nickname := user_nickname.get_value()), conn, c):
             init_user(user_nickname, conn, c)
-            log.debug("initializing user")
+            log.debug("initialized new user")
         else:
             log.debug("user found")
 
@@ -27,6 +27,7 @@ def main(user_nickname) -> None:
             surface = pygame.display.set_mode((window_width, window_height))
             keys_amount = 0
             score = 0
+            is_missed = False
             rects = []
             jump = 1
 
@@ -58,8 +59,13 @@ def main(user_nickname) -> None:
                                 cls.keys_amount -= 1
                                 cls.score += 1
                                 log.debug("LEFT")
-                            # else:
-                            #     log.debug("MISS")
+                                cls.is_missed = False
+                                break
+                        if cls.is_missed:
+                            cls.score -= 1
+                            log.debug("MISS")
+                        else:
+                            cls.is_missed = True
 
                     elif event.type == pygame.KEYDOWN and event.key == 50:
                         for rect in cls.rects:
@@ -70,8 +76,13 @@ def main(user_nickname) -> None:
                                 cls.keys_amount -= 1
                                 cls.score += 1
                                 log.debug("MID")
-                            # else:
-                            #     log.debug("MISS")
+                                cls.is_missed = False
+                                break
+                        if cls.is_missed:
+                            cls.score -= 1
+                            log.debug("MISS")
+                        else:
+                            cls.is_missed = True
 
                     elif event.type == pygame.KEYDOWN and event.key == 51:
                         for rect in cls.rects:
@@ -82,8 +93,13 @@ def main(user_nickname) -> None:
                                 cls.keys_amount -= 1
                                 cls.score += 1
                                 log.debug("RIGHT")
-                            # else:
-                            #     log.debug("MISS")
+                                cls.is_missed = False
+                                break
+                        if cls.is_missed:
+                            cls.score -= 1
+                            log.debug("MISS")
+                        else:
+                            cls.is_missed = True
 
             @classmethod
             def draw_left_key(cls) -> None:
@@ -168,7 +184,7 @@ def main(user_nickname) -> None:
             @classmethod
             def render_score(cls) -> None:
                 pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
-                score_text = segoeui_font.render(f"{highest_score} {Piano.score}", True, (255, 0, 0))
+                score_text = segoeui_font.render(f"{highest_score}   {Piano.score}", True, (255, 0, 0))
                 Piano.surface.blit(score_text, (2, 0))
 
             @classmethod
