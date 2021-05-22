@@ -1,4 +1,3 @@
-import pygame_menu
 from piano_api import *
 from pygame_menu.examples import create_example_window
 
@@ -10,10 +9,19 @@ else:
 
 
 def start() -> None:
+    """
+    calls main function
+    """
     main(user_nickname, game_mode)
 
 
-def set_game_mode(a, b):
+def set_game_mode(a: tuple[tuple[str, int], int], b: int) -> None:
+    """
+    sets game mode
+
+    :param a: a tuple consisting of callback data and a tuple with name and position
+    :param b: callback data
+    """
     global game_mode
     game_mode = a
 

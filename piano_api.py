@@ -4,12 +4,16 @@ import random
 import pygame
 import sqlite3
 import threading
+import pygame_menu
 import numpy as np
 import logging as log
 from colourlib import *
 
 
-def main(user_nickname, game_mode) -> None:
+def main(
+        user_nickname: pygame_menu.widgets.widget.textinput.TextInput,
+        game_mode: tuple[tuple[str, int], int]
+) -> None:
     with sqlite3.connect("users.sqlite") as conn:
         log.debug("connected to db")
         c = conn.cursor()
