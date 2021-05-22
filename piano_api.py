@@ -1,14 +1,15 @@
-import logging as log
-import sqlite3
-import pygame
-import threading
 import sys
-import numpy as np
-import random
 import time
+import random
+import pygame
+import sqlite3
+import threading
+import numpy as np
+import logging as log
+from colourlib import *
 
 
-def main(user_nickname) -> None:
+def main(user_nickname, game_mode) -> None:
     with sqlite3.connect("users.sqlite") as conn:
         log.debug("connected to db")
         c = conn.cursor()
@@ -19,6 +20,7 @@ def main(user_nickname) -> None:
             log.debug("user found")
 
         class Piano:
+            log.debug(f"game is in {game_mode[0][0]} mode\n{Fg.Red}Game modes are under development{Fg.Reset}")
             pygame.display.set_caption("Piano - game")
             clock = pygame.time.Clock()
             key_height = 120
@@ -217,7 +219,7 @@ def main(user_nickname) -> None:
         keys_generator_thread = threading.Thread(target=Piano.generate_keys, daemon=True)
         keys_generator_thread.start()
         segoeui_font_36 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
-        segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
+        # segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
         highest_score = get_user(user_nickname, conn, c)[1]
         Piano.set_music("stal-c418.wav")
 

@@ -1,5 +1,4 @@
 import pygame_menu
-from colourlib import *
 from piano_api import *
 from pygame_menu.examples import create_example_window
 
@@ -10,10 +9,16 @@ else:
     log.basicConfig(format=f"{Fg.Green}{Style.Bold}%(asctime)s{Fg.Reset} %(message)s{Style.Reset}")
 
 
-def start():
-    main(user_nickname)
+def start() -> None:
+    main(user_nickname, game_mode)
 
 
+def set_game_mode(a, b):
+    global game_mode
+    game_mode = a
+
+
+game_mode = (("Endless", 1), 0)
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
@@ -36,7 +41,7 @@ except AttributeError:
     )
 
 user_nickname = menu.add.text_input("Nickname: ", default="3p1c Cl1ck3r", maxchar=24)
-# menu.add.selector("Difficulty :", [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
+menu.add.selector("Game mode: ", [("Endless", 1), ("Normal", 2), ("Hardcore", 3)], onchange=set_game_mode)
 menu.add.button("Play", start)
 menu.add.button("Quit", pygame_menu.events.EXIT)
 log.debug("menu set")
