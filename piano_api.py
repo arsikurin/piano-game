@@ -139,8 +139,7 @@ def main() -> None:
         """
         log.debug("keys generator thread started")
         while True:
-            wait = float(random.choice(times))
-            time.sleep(wait)
+            time.sleep(float(random.choice(times)))
             choose = random.randint(0, 2)
             if choose == 0:
                 Piano.left_create()
@@ -159,7 +158,7 @@ def main() -> None:
         # times = np.linspace(0.6, 0.9)
         # elif Piano.score < 30:
         Piano.clock.tick(360)
-        times = np.linspace(0.4, 0.6)
+        times = np.linspace(0.5, 0.6)
         # elif Piano.score < 80:
         #     Piano.jump = 2
         #     clock.tick(260)
@@ -171,7 +170,7 @@ def main() -> None:
         #     Piano.jump = 4
         #     clock.tick(360)
 
-    times = np.linspace(0.4, 0.6)
+    times = np.linspace(0.5, 0.6)
     keys_generator_thread = threading.Thread(target=generate_keys, daemon=True)
     keys_generator_thread.start()
 
