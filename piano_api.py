@@ -280,10 +280,11 @@ def main(
 
         if sys.platform == "linux":
             segoeui_font_36 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+            segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
         elif sys.platform == "win32":
             segoeui_font_36 = pygame.font.Font('/Windows/Fonts/segoeui.ttf', 36)
+            segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
 
-        segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
         highest_score = get_user(user_nickname, conn, c)[1]
         Piano.set_music("stal-c418.wav")
 
