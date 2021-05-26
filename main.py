@@ -47,7 +47,6 @@ except AttributeError:
         title="Piano",
         width=600
     )
-
 user_nickname = menu.add.text_input("Nickname: ", default="3p1c Cl1ck3r", maxchar=24)
 menu.add.selector("Game mode: ", [("Endless", 1), ("Normal", 2), ("Hardcore", 3)], onchange=set_game_mode)
 menu.add.button("Play", start)

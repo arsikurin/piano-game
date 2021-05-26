@@ -37,6 +37,8 @@ def main(
             rects = []
             jump = 1
 
+
+
             surface.fill((255, 255, 255))
             pygame.draw.line(surface, (128, 128, 128), [200, 0], [200, 1000], 5)
             pygame.draw.line(surface, (128, 128, 128), [400, 0], [400, 1000], 5)
@@ -103,12 +105,74 @@ def main(
                                 log.debug("RIGHT")
                                 cls.is_missed = False
                                 break
-                        if cls.is_missed:
-                            if cls.score:
-                                cls.score -= 1
-                            log.debug("MISS")
-                        else:
-                            cls.is_missed = True
+                            if cls.is_missed:
+                                if cls.score:
+                                    cls.score -= 1
+                                log.debug("MISS")
+                            else:
+                                 cls.is_missed = True
+                    elif event.type==pygame.MOUSEBUTTONDOWN:
+                        ym,xm =pygame.mouse.get_pos()
+                        if 0<ym<200:
+                            for rect in cls.rects:
+                                mid, bottom = rect.midbottom
+                                if mid < 100 and bottom >= 800 >= bottom - cls.key_height:
+                                    pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                                    cls.rects.remove(rect)
+                                    cls.keys_amount -= 1
+                                    cls.score += 1
+                                    log.debug("LEFT")
+                                    cls.is_missed = False
+                                    break
+                                if cls.is_missed:
+                                    if cls.score:
+                                        cls.score -= 0.5
+                                    log.debug("MISS")
+                                else:
+                                    cls.is_missed = True
+                        elif 201<ym<400:
+                            for rect in cls.rects:
+                                mid, bottom = rect.midbottom
+                                if 400 > mid > 100 and bottom >= 800 >= bottom - cls.key_height:
+                                    pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                                    cls.rects.remove(rect)
+                                    cls.keys_amount -= 1
+                                    cls.score += 1
+                                    log.debug("MID")
+                                    cls.is_missed = False
+                                    break
+                                if cls.is_missed:
+                                    if cls.score:
+                                       cls.score -= 0.5
+                                       log.debug("MISS")
+                                else:
+                                    cls.is_missed = True
+                        elif 401<ym<601:
+                             for rect in cls.rects:
+                                 mid, bottom = rect.midbottom
+                                 if mid > 500 and bottom >= 800 >= bottom - cls.key_height:
+                                    pygame.draw.rect(cls.surface, (255, 255, 255), rect)
+                                    cls.rects.remove(rect)
+                                    cls.keys_amount -= 1
+                                    cls.score += 1
+                                    log.debug("RIGHT")
+                                    cls.is_missed = False
+                                    break
+                                 if cls.is_missed:
+                                     if cls.score:
+                                        cls.score -= 0.5
+                                        log.debug("MISS")
+                                 else:
+                                    cls.is_missed = True
+
+
+
+
+
+
+
+
+
 
             @classmethod
             def draw_left_key(cls) -> None:
@@ -159,6 +223,7 @@ def main(
                         if cls.score:
                             cls.score -= 1
 
+
             @classmethod
             def clear_rects(cls) -> None:
                 """
@@ -193,8 +258,9 @@ def main(
             @classmethod
             def render_score(cls) -> None:
                 pygame.draw.rect(Piano.surface, (255, 255, 255), (0, 0, 600, 50))
-                Piano.surface.blit(segoeui_font_36.render(f"{highest_score}   {Piano.score}", True, (255, 0, 0)),
-                                   (2, 0))
+                Piano.surface.blit(
+                    segoeui_font_36.render(f"HI {int(highest_score)}   {int(Piano.score)}", True, (255, 0, 0)), (2, 0))
+
                 # Piano.surface.blit(segoeui_font_30.render(f"{user_nickname}", True, (255, 0, 0)),
                 #                    (cls.window_width - len(user_nickname) * 15, 7))
 
@@ -222,7 +288,12 @@ def main(
 
         keys_generator_thread = threading.Thread(target=Piano.generate_keys, daemon=True)
         keys_generator_thread.start()
-        segoeui_font_36 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+
+        if sys.platform == "linux":
+            segoeui_font_36 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
+        elif sys.platform == "win32":
+            segoeui_font_36 = pygame.font.Font('/Windows/Fonts/segoeui.ttf', 36)
+
         # segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
         highest_score = get_user(user_nickname, conn, c)[1]
         Piano.set_music("stal-c418.wav")
