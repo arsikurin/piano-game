@@ -1,5 +1,4 @@
 from piano_api import *
-from pygame_menu.themes import Theme
 from pygame_menu.examples import create_example_window
 
 DEBUG = True
@@ -33,7 +32,7 @@ pygame.font.init()
 pygame.mixer.init()
 menu_surface = create_example_window("Piano - menu", (600, 400))
 
-THEME_SOLARIZED_DARK = Theme(
+THEME_SOLARIZED_DARK = pygame_menu.Theme(
     background_color=(47, 48, 51),
     cursor_color=(123, 51, 86),
     cursor_selection_color=(146, 160, 160, 120),
