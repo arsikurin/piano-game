@@ -1,7 +1,4 @@
-# **piano-game**
-
-
-# Installation
+# **Installation**
 ### install pipenv
 ```shell
 python -m pip install pipenv
