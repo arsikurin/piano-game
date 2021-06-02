@@ -7,7 +7,7 @@ import threading
 import pygame_menu
 import numpy as np
 import logging as log
-from colourlib import *
+from colourlib import Fg
 
 
 def main(
@@ -287,6 +287,7 @@ def main(
 				log.debug("linux detected")
 				segoeui_font_36 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 36)
 				segoeui_font_30 = pygame.font.Font("/usr/share/fonts/WindowsFonts/segoeui.ttf", 30)
+
 			elif sys.platform == "win32":
 				log.debug("windows detected")
 				segoeui_font_36 = pygame.font.Font("/Windows/Fonts/segoeui.ttf", 36)
@@ -310,6 +311,7 @@ def main(
 				Piano.handle_events()
 				Piano.clear_rects()
 				pygame.display.update()
+
 		except KeyboardInterrupt:
 			if highest_score < Piano.score:
 				update_points(Piano.score, user_nickname, conn, c)
