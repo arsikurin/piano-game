@@ -1,16 +1,15 @@
-# **piano-game**
-
-## _install pipenv_
+# **Installation**
+### install pipenv
 ```shell
 python -m pip install pipenv
 ```
 
-### _launch pipenv environment_
+### launch pipenv environment
 ```shell
 pipenv shell
 ```
 
-### _install required modules_
+### install required dependencies from Pipfile
 ```shell
 pipenv install
 ```
