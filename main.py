@@ -1,9 +1,15 @@
-from piano_api import *
+import pygame
+import pygame_menu
+import logging as log
+
+from piano_api import main
+from colourlib import Fg, Style
 from pygame_menu.examples import create_example_window
 
 DEBUG = True
 if DEBUG:
-    log.basicConfig(format=f"{Fg.Green}{Style.Bold}%(asctime)s{Fg.Reset}{Style.Bold} %(message)s{Style.Reset}", level=log.DEBUG)
+    log.basicConfig(format=f"{Fg.Green}{Style.Bold}%(asctime)s{Fg.Reset}{Style.Bold} %(message)s{Style.Reset}",
+                    level=log.DEBUG)
 else:
     log.basicConfig(format=f"{Fg.Green}{Style.Bold}%(asctime)s{Fg.Reset}{Style.Bold} %(message)s{Style.Reset}")
 

@@ -1,13 +1,14 @@
 import sys
-import time
 import random
 import pygame
 import sqlite3
-import threading
 import pygame_menu
 import numpy as np
 import logging as log
-from colourlib import *
+
+from colourlib import Fg
+from time import sleep
+from threading import Thread
 
 
 def main(
@@ -238,7 +239,7 @@ def main(
                 """
                 log.debug("keys generator thread started")
                 while True:
-                    time.sleep(float(random.choice(cls.times)))
+                    sleep(float(random.choice(cls.times)))
                     choose = random.randint(0, 2)
                     if choose == 0:
                         Piano.render_left_key()
@@ -281,7 +282,7 @@ def main(
                 #     Piano.jump = 4
                 #     clock.tick(360)
 
-        keys_generator_thread = threading.Thread(target=Piano.generate_keys, daemon=True)
+        keys_generator_thread = Thread(target=Piano.generate_keys, daemon=True)
         keys_generator_thread.start()
 
         if sys.platform == "linux":
