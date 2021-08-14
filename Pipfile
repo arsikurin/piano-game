@@ -9,6 +9,8 @@ colourlib = "*"
 numpy = "*"
 requests = "*"
 pygame-menu = "*"
+pyyaml = "*"
+firebase-admin = "*"
 
 [dev-packages]
 
