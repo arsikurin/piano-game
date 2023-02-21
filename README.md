@@ -1,20 +1,17 @@
-# **Installation**
-### install pipenv
+### launch virtual environment
+
 ```shell
-python -m pip install pipenv
+poetry shell
 ```
 
-### launch pipenv environment
-```shell
-pipenv shell
-```
+### install required dependencies with Poetry
 
-### install required dependencies from Pipfile
 ```shell
-pipenv install
+poetry install
 ```
 
 ### run game
+
 ```shell
 python main.py
 ```
